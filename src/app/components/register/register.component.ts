@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
-import { AbstractControl, FormBuilder, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, ValidationErrors,  Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
+import { User } from 'src/app/interfaces/auth';
+import { AuthService } from 'src/app/services/auth.service';
 
 
 @Component({
@@ -17,7 +21,7 @@ export class RegisterComponent {
     }, {
       validators: this.passwordMatchValidator.bind(this) // Bind the method correctly (without bind it used before declaration solve this problem)
     });
-  constructor(private formbuilder:FormBuilder){}
+  constructor(private formbuilder:FormBuilder, private authService:AuthService, private messageService:MessageService, private router:Router){}
 
   get fullName(){
     return this.registerForm.controls['fullName']
@@ -40,4 +44,24 @@ export class RegisterComponent {
     }
     return password.value === confirmPassword.value ? null : { passwordMismatch: true };
   }
+  submitDetails(){
+    console.log(this.registerForm.value)
+    const postData={...this.registerForm.value} //takes all data from register form except the confirm password
+    delete postData.confirmPassword
+    this.authService.registerUser(postData as User).subscribe({
+      next:(response)=> {
+        console.log(response)
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'User Registered Successfully' });
+        this.router.navigate(['login'])
+    },
+    error:(err)=> {
+    console.log(err)
+    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'User Registered failed' });
+
+    }
+  }
+    
+    )
+  }
+
 }
