@@ -14,12 +14,19 @@ import {HttpClientModule } from '@angular/common/http'
 import { ToastModule } from 'primeng/toast';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 import { MessageService } from 'primeng/api';
+import {  SidebarModule } from 'primeng/sidebar';
+import { OverlayPanelModule } from "primeng/overlaypanel";
+import { PaymentChannelsComponent } from './components/payment-channels/payment-channels.component';
+import { ZonesOccupancyComponent } from './components/zones-occupancy/zones-occupancy.component'; 
+
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    HomeComponent
+    HomeComponent,
+    PaymentChannelsComponent,
+    ZonesOccupancyComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +37,9 @@ import { MessageService } from 'primeng/api';
     ReactiveFormsModule,
     HttpClientModule,
     ToastModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    SidebarModule,
+    OverlayPanelModule
   ],
   providers: [MessageService],
   bootstrap: [AppComponent]
